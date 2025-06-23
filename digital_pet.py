@@ -1,7 +1,7 @@
 # Step 1: Import necessary modules
 import time     # - time (for loading delays)
 import json     # - json (to save/load pet state)
-from random import randrange        # - randrange (for random stat changes)
+from random import randrange    # - randrange (for random stat changes)
 import os       # - os (to check file existence)
 
 # Step 2: Define DigiPet class
@@ -17,14 +17,38 @@ class DigiPet:
         self.hunger = hunger
         self.life = life
         self.vocab = vocab if vocab is not None else ["Grrr...", "Meow", "Purr~"]
+        
+    # Private method to simulate time passing
+    def __clock_tick(self):
+        self.age += 1       # - Increase age
+        self.energy -= 5    # - Decrease energy
+        self.hunger += 5    # - Increase hunger
+        
+        self.__clamp_stats()       # - Clamp stats within limits
+        
+        # - Check for life status (age limit, hunger, energy)
+        if self.age == 5:
+            print(f"\n✨ {self.name} is growing up!")
+        
+        if self.age >= DigiPet.max_age:
+            print(f"\n💀 {self.name} has grown very old and passed away peacefully...")
+            self.life = 0
+        
+        if self.hunger >= 100:
+            self.hunger = 100
+            self.life -= 10
+            print(f"\n⚠️ {self.name} is starving!")
+            
+        if self.energy <= 0:
+            self.energy = 0
+            self.life -= 5
+            print(f"\n⚠️ {self.name} is exhausted!")
+            
+        if self.life <= 0:
+            self.life = 0
+            print(f"\n💀 {self.name} has passed away... Take better care next time.")
+            raise Exception("Pet has died.")
 
-# Step 4: Implement __clock_tick() private method to simulate time passing:
-# - Increase age
-# - Decrease energy
-# - Increase hunger
-# - Clamp stats within limits
-# - Check for life status (age limit, hunger, energy)
-# - Raise Exception if pet dies
 
 # Step 5: Implement stage() method to return pet life stage based on age
 
