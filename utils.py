@@ -1,4 +1,5 @@
 import time
+import os
 
 # Function for loading screen
 def loading_screen(self):
@@ -7,3 +8,7 @@ def loading_screen(self):
         time.sleep(1)
         print("Loading" + "." * (i + 1))
     print("✨ Your DigiPet is here!\n")
+    
+# Function for clearing terminal
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
