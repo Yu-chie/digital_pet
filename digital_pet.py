@@ -89,14 +89,61 @@ class DigiPet:
             print(f"\n💀 {self.name} is no longer with us...")
         else:
             print(f"\n😊 {self.name} is feeling {current_mood}!")
+    
+    # Interactive methods:
+    def talk(self):
+        print(f"\n🗣️ I am {self.name}, a {self.animal_type}. I feel {self.mood()} right now.")
+        print(f"{self.name} says: {self.vocab[randrange(len(self.vocab))]}")
+        self.__clock_tick()
+        self.mood_message()
+        self.save()
 
+    def feed(self):
+        if self.hunger == 0:
+            print(f"\n{self.name} isn't hungry.")
+        else:
+            amount = randrange(10, 30)
+            self.hunger -= amount
+            if self.hunger < 0:
+                self.hunger = 0
+            print(f"\n🍽️ {self.name} munches happily! Hunger -{amount}")
+        self.__clock_tick()
+        self.mood_message()
+        self.save()
 
-# Step 9: Implement interactive methods:
-# - talk(): pet says a random word, triggers clock tick, shows mood, saves game
-# - feed(): reduce hunger by random amount, triggers clock tick, shows mood, saves
-# - sleep(): increase energy by random amount, triggers clock tick, shows mood, saves
-# - play(): decrease energy, increase hunger, triggers clock tick, shows mood, saves
-# - teach(word): add new word to vocab if not known, reduce energy, triggers clock tick, shows mood, saves
+    def sleep(self):
+        gain = randrange(20, 40)
+        self.energy += gain
+        if self.energy > 100:
+            self.energy = 100
+        print(f"\n😴 {self.name} took a nap and feels better! Energy +{gain}")
+        self.__clock_tick()
+        self.mood_message()
+        self.save()
+
+    def play(self):        
+        if self.energy < 15:
+            print(f"\n{self.name} is too tired to play!")
+            return
+        else:
+            fun = randrange(10, 30)
+            self.energy -= fun
+            self.hunger += 10
+            print(f"\n🎾 {self.name} had fun playing! Energy -{fun}, Hunger +10")
+        self.__clock_tick()
+        self.mood_message()
+        self.save()
+
+    def teach(self, word):
+        if word in self.vocab:
+            print(f"\n{self.name} already knows the word '{word}'!")
+        else:
+            self.vocab.append(word)
+            self.energy -= 5
+            print(f"\n🧠 You taught {self.name} to say '{word}'!")
+            self.__clock_tick()
+            self.mood_message()
+            self.save()
 
 # Step 10: Implement show_status() to print all pet stats and mood
 
