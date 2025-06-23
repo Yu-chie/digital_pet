@@ -9,6 +9,7 @@ class DigiPet:
     max_age = 10
     save_file = "save.json"
     
+    
     # Initialize pet with default or loaded values
     def __init__(self, name, age=0, energy=100, hunger=0, life=100, vocab=None):
         self.name = name
@@ -17,6 +18,7 @@ class DigiPet:
         self.hunger = hunger
         self.life = life
         self.vocab = vocab if vocab is not None else ["Grrr...", "Meow", "Purr~"]
+        
         
     # Private method to simulate time passing
     def __clock_tick(self):
@@ -49,6 +51,7 @@ class DigiPet:
             print(f"\n💀 {self.name} has passed away... Take better care next time.")
             raise Exception("Pet has died.")
         
+        
     # Method to return pet life stage based on age
     def stage(self):
         if self.age < 3:
@@ -58,11 +61,13 @@ class DigiPet:
         else:
             return "Adult"
         
+        
     # Private method to keep stats in valid range
     def __clamp_stats(self):
         self.energy = max(0, min(self.energy, 100))
         self.hunger = max(0, min(self.hunger, 100))
         self.life = max(0, min(self.life, 100))
+        
         
     # Method to return current pet mood based on stats
     def mood(self):
@@ -75,6 +80,7 @@ class DigiPet:
         if self.energy > 50 and self.hunger < 50:
             return "bored"
         return "happy"
+    
     
     # Method to print a message based on pet's mood
     def mood_message(self):
@@ -90,6 +96,7 @@ class DigiPet:
         else:
             print(f"\n😊 {self.name} is feeling {current_mood}!")
     
+    
     # Interactive methods:
     def talk(self):
         print(f"\n🗣️ I am {self.name}, a {self.animal_type}. I feel {self.mood()} right now.")
@@ -97,6 +104,7 @@ class DigiPet:
         self.__clock_tick()
         self.mood_message()
         self.save()
+
 
     def feed(self):
         if self.hunger == 0:
@@ -111,6 +119,7 @@ class DigiPet:
         self.mood_message()
         self.save()
 
+
     def sleep(self):
         gain = randrange(20, 40)
         self.energy += gain
@@ -120,6 +129,7 @@ class DigiPet:
         self.__clock_tick()
         self.mood_message()
         self.save()
+
 
     def play(self):        
         if self.energy < 15:
@@ -134,6 +144,7 @@ class DigiPet:
         self.mood_message()
         self.save()
 
+
     def teach(self, word):
         if word in self.vocab:
             print(f"\n{self.name} already knows the word '{word}'!")
@@ -144,9 +155,22 @@ class DigiPet:
             self.__clock_tick()
             self.mood_message()
             self.save()
-
-# Step 10: Implement show_status() to print all pet stats and mood
-
+    
+    
+    # Method to show all pet stats and mood
+    def show_status(self):
+        print(f"""
+📋 STATUS
+Name: {self.name}
+Stage: {self.stage()}
+Type: {self.animal_type}
+Age: {self.age}
+Energy: {self.energy}/100
+Hunger: {self.hunger}/100
+Life: {self.life}/100
+Mood: {self.mood()}
+""")
+        
 # Step 11: Implement save() method to write pet data to JSON file
 
 # Step 12: Implement load() class method to load pet data from JSON file or return None
