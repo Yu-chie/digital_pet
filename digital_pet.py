@@ -75,8 +75,21 @@ class DigiPet:
         if self.energy > 50 and self.hunger < 50:
             return "bored"
         return "happy"
+    
+    # Method to print a message based on pet's mood
+    def mood_message(self):
+        current_mood = self.mood()
+        if current_mood == "bored":
+            print(f"\n😐 {self.name} looks bored. Maybe play with them?")
+        elif current_mood == "tired":
+            print(f"\n😴 {self.name} looks very tired. Let them sleep!")
+        elif current_mood == "hungry":
+            print(f"\n⚠️ {self.name} is very hungry!")
+        elif current_mood == "gone":
+            print(f"\n💀 {self.name} is no longer with us...")
+        else:
+            print(f"\n😊 {self.name} is feeling {current_mood}!")
 
-# Step 8: Implement mood_message() method to print a message based on pet's mood
 
 # Step 9: Implement interactive methods:
 # - talk(): pet says a random word, triggers clock tick, shows mood, saves game
