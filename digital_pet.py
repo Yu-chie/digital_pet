@@ -267,4 +267,6 @@ Mood: {self.mood()}
             pet.save()
             print("Game over. Thanks for playing!")
             
-# Step 15: Add if __name__ == "__main__" to run main()
+# Run main() program
+if __name__ == "__main__":
+    main()
