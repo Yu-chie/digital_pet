@@ -63,8 +63,18 @@ class DigiPet:
         self.energy = max(0, min(self.energy, 100))
         self.hunger = max(0, min(self.hunger, 100))
         self.life = max(0, min(self.life, 100))
-
-# Step 7: Implement mood() method to return current pet mood based on stats
+        
+    # Method to return current pet mood based on stats
+    def mood(self):
+        if self.life <= 0:
+            return "gone"
+        if self.hunger > 80:
+            return "hungry"
+        if self.energy < 20:
+            return "tired"
+        if self.energy > 50 and self.hunger < 50:
+            return "bored"
+        return "happy"
 
 # Step 8: Implement mood_message() method to print a message based on pet's mood
 
