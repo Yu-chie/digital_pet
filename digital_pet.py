@@ -171,8 +171,20 @@ Life: {self.life}/100
 Mood: {self.mood()}
 """)
         
-# Step 11: Implement save() method to write pet data to JSON file
-
+    # Method to save/write pet data to JSON file
+    def save(self):
+        data = {
+            "name": self.name,
+            "age": self.age,
+            "energy": self.energy,
+            "hunger": self.hunger,
+            "life": self.life,
+            "vocab": self.vocab,
+        }
+        with open(DigiPet.save_file, "w") as file:
+            json.dump(data, file)
+        print("\n💾 Game saved!")
+        
 # Step 12: Implement load() class method to load pet data from JSON file or return None
 
 # Step 13: Implement loading_screen() function to simulate loading animation on startup
