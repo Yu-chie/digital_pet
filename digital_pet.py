@@ -57,8 +57,12 @@ class DigiPet:
             return "Adolescent"
         else:
             return "Adult"
-
-# Step 6: Implement __clamp_stats() private method to keep stats in valid range
+        
+    # Private method to keep stats in valid range
+    def __clamp_stats(self):
+        self.energy = max(0, min(self.energy, 100))
+        self.hunger = max(0, min(self.hunger, 100))
+        self.life = max(0, min(self.life, 100))
 
 # Step 7: Implement mood() method to return current pet mood based on stats
 
