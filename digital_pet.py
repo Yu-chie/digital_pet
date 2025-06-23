@@ -13,6 +13,7 @@ class DigiPet:
     # Initialize pet with default or loaded values
     def __init__(self, name, age=0, energy=100, hunger=0, life=100, vocab=None):
         self.name = name
+        self.animal_type = "Cat"
         self.age = age
         self.energy = energy
         self.hunger = hunger
@@ -202,15 +203,6 @@ Mood: {self.mood()}
             life=data.get("life", 100),
             vocab=data.get("vocab", ["Grrr...", "Meow", "Purr~"]),
         )
-
-
-    # Function for loading screen
-    def loading_screen(self):
-        print("👶 A new baby pet is being born...")
-        for i in range(3):
-            time.sleep(1)
-            print("Loading" + "." * (i + 1))
-        print("✨ Your DigiPet is here!\n")
 
 
     # Main Function
