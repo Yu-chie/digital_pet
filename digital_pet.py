@@ -48,9 +48,15 @@ class DigiPet:
             self.life = 0
             print(f"\n💀 {self.name} has passed away... Take better care next time.")
             raise Exception("Pet has died.")
-
-
-# Step 5: Implement stage() method to return pet life stage based on age
+        
+    # Method to return pet life stage based on age
+    def stage(self):
+        if self.age < 3:
+            return "Baby"
+        elif self.age < 7:
+            return "Adolescent"
+        else:
+            return "Adult"
 
 # Step 6: Implement __clamp_stats() private method to keep stats in valid range
 
