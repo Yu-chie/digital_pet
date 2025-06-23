@@ -1,5 +1,4 @@
 # Step 1: Import necessary modules
-import time     # - time (for loading delays)
 import json     # - json (to save/load pet state)
 from random import randrange    # - randrange (for random stat changes)
 import os       # - os (to check file existence)

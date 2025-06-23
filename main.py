@@ -2,7 +2,7 @@ from digital_pet import DigiPet
 from utils import loading_screen, clear_screen
 
 # Main Function
-def main(self):
+def main():
     # - Load existing pet or create new pet
     pet = DigiPet.load()
     if pet:
@@ -11,7 +11,7 @@ def main(self):
         loading_screen()
         pet_name = input("What do you want to name your pet?: ")
         pet = DigiPet(pet_name)
-        
+
     input(f"\nHello! I am {pet.name} the {pet.animal_type}, and I am new here!\nPress Enter to start!")
 
     # Status and interaction menu
@@ -20,15 +20,15 @@ def main(self):
             clear_screen()
             pet.show_status()
             print("""
-    *** INTERACT WITH YOUR PET ***
+*** INTERACT WITH YOUR PET ***
 
-    1. Feed your pet 🍽️
-    2. Talk with your pet 🗣️
-    3. Teach your pet a new word 📖
-    4. Play with your pet 🎾
-    5. Let your pet sleep 😴
-    0. Quit 🚪
-    """)
+1. Feed your pet 🍽️
+2. Talk with your pet 🗣️
+3. Teach your pet a new word 📖
+4. Play with your pet 🎾
+5. Let your pet sleep 😴
+0. Quit 🚪
+""")
             choice = input("Enter your choice: ")
 
             if choice == "0":
@@ -42,20 +42,22 @@ def main(self):
             elif choice == "2":
                 pet.talk()
             elif choice == "3":
-                new_word = input("What word do you want to teach your pet?: ")
-                pet.teach(new_word)
+                word = input("What word do you want to teach your pet?: ")
+                pet.teach(word)
             elif choice == "4":
                 pet.play()
             elif choice == "5":
                 pet.sleep()
             else:
                 print("❌ Invalid choice. Please select from the menu.")
-    
+
+            input("\nPress Enter to continue...")
+
     except Exception as e:
         print(str(e))
         pet.save()
         print("Game over. Thanks for playing!")
-            
+
 # Run main() program
 if __name__ == "__main__":
     main()
