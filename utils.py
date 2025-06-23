@@ -2,7 +2,7 @@ import time
 import os
 
 # Function for loading screen
-def loading_screen(self):
+def loading_screen():
     print("👶 A new baby pet is being born...")
     for i in range(3):
         time.sleep(1)
