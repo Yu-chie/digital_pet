@@ -1,5 +1,5 @@
 from digital_pet import DigiPet
-from utils import loading_screen
+from utils import loading_screen, clear_screen
 
 # Main Function
 def main(self):
@@ -17,6 +17,7 @@ def main(self):
     # Status and interaction menu
     try:
         while True:
+            clear_screen()
             pet.show_status()
             print("""
     *** INTERACT WITH YOUR PET ***
