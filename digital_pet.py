@@ -5,10 +5,18 @@ from random import randrange        # - randrange (for random stat changes)
 import os       # - os (to check file existence)
 
 # Step 2: Define DigiPet class
-# - Set Class Variables: max_age, save_file
-# - Attributes: name, animal_type, age, energy, hunger, life, vocabulary
-
-# Step 3: Implement __init__ method to initialize pet with default or loaded values
+class DigiPet:
+    max_age = 10
+    save_file = "save.json"
+    
+    # Initialize pet with default or loaded values
+    def __init__(self, name, age=0, energy=100, hunger=0, life=100, vocab=None):
+        self.name = name
+        self.age = age
+        self.energy = energy
+        self.hunger = hunger
+        self.life = life
+        self.vocab = vocab if vocab is not None else ["Grrr...", "Meow", "Purr~"]
 
 # Step 4: Implement __clock_tick() private method to simulate time passing:
 # - Increase age
