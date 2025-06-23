@@ -1,8 +1,8 @@
 # Step 1: Import necessary modules
-# - time (for loading delays)
-# - json (to save/load pet state)
-# - randrange (for random stat changes)
-# - os (to check file existence)
+import time     # - time (for loading delays)
+import json     # - json (to save/load pet state)
+from random import randrange        # - randrange (for random stat changes)
+import os       # - os (to check file existence)
 
 # Step 2: Define DigiPet class
 # - Set Class Variables: max_age, save_file
