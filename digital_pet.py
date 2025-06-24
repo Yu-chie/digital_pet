@@ -25,7 +25,7 @@ class DigiPet:
         
     # Private method to simulate time passing
     def __clock_tick(self):
-        self.age += 1       # - Increase age
+        self.age += 0.1       # - Increase age
         self.energy -= 5    # - Decrease energy
         self.hunger += 5    # - Increase hunger
         
