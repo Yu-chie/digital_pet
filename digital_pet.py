@@ -3,6 +3,7 @@ import time
 import json     # - json (to save/load pet state)
 from random import randrange    # - randrange (for random stat changes)
 import os       # - os (to check file existence)
+from utils import loading_screen, clear_screen
 
 # Step 2: Define DigiPet class
 class DigiPet:
@@ -126,6 +127,7 @@ class DigiPet:
     
     # Interactive methods:
     def talk(self):
+        clear_screen()
         print(f"\n🗣️ I am {self.name}, a {self.animal_type}. I feel {self.mood()} right now.")
         print(f"{self.name} says: {self.vocab[randrange(len(self.vocab))]}")
         self.__clock_tick()
@@ -134,6 +136,7 @@ class DigiPet:
 
 
     def feed(self):
+        clear_screen()
         if self.hunger == 0:
             print(f"\n{self.name} isn't hungry.")
         else:
@@ -148,6 +151,7 @@ class DigiPet:
 
 
     def sleep(self):
+        clear_screen()
         gain = randrange(20, 40)
         self.energy += gain
         if self.energy > 100:
@@ -158,7 +162,8 @@ class DigiPet:
         self.save()
 
 
-    def play(self):        
+    def play(self):
+        clear_screen()
         if self.energy < 15:
             print(f"\n{self.name} is too tired to play!")
             return
@@ -173,6 +178,7 @@ class DigiPet:
 
 
     def teach(self, word):
+        clear_screen()
         if word in self.vocab:
             print(f"\n{self.name} already knows the word '{word}'!")
         else:
