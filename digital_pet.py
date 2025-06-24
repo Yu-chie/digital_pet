@@ -1,3 +1,5 @@
+#DigiPet
+
 # Step 1: Import necessary modules
 import time
 import json     # - json (to save/load pet state)
