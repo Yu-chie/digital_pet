@@ -1,9 +1,11 @@
+#Main
+
 from digital_pet import DigiPet
 from utils import loading_screen, clear_screen
 
 # Main Function
 def main():
-    # - Load existing pet or create new pet
+    # Load existing pet or create new pet
     pet = DigiPet.load()
     if pet:
         print(f"\nWelcome back! You are continuing with {pet.name} the {pet.animal_type}.")
@@ -17,7 +19,7 @@ def main():
     # Status and interaction menu
     try:
         while True:
-            pet.update_stats_based_on_time()
+            
             clear_screen()
             pet.show_status()
             print("""

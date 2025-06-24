@@ -7,8 +7,8 @@ from utils import loading_screen, clear_screen
 
 # Step 2: Define DigiPet class
 class DigiPet:
-    max_age = 10
-    save_file = "save.json"
+    max_age = 10                # Maximum age before pet passes away
+    save_file = "save.json"     # Filename for saving/loading pet data
     
     
     # Initialize pet with default or loaded values
@@ -23,53 +23,62 @@ class DigiPet:
         self.last_update = last_update or time.time()
         
         
-    # Private method to simulate time passing
+    # Private method to simulate time passing after each interaction
     def __clock_tick(self):
-        self.age += 0.1       # - Increase age
+        self.age += 0.1     # - Increase age
         self.energy -= 5    # - Decrease energy
         self.hunger += 5    # - Increase hunger
         
         self.__clamp_stats()       # - Clamp stats within limits
         
         # - Check for life status (age limit, hunger, energy)
+        
+        # Notify when pet is growing up
         if int(self.age) == 5:
             print(f"\n✨ {self.name} is growing up!")
         
+        # Check if pet reached max age and should pass away peacefully
         if self.age >= DigiPet.max_age:
             print(f"\n💀 {self.name} has grown very old and passed away peacefully...")
             self.life = 0
         
+        # If hunger maxes out, decrease life and warn user
         if self.hunger >= 100:
             self.hunger = 100
             self.life -= 10
             print(f"\n⚠️ {self.name} is starving!")
-            
+        
+        # If energy depletes, decrease life and warn user
         if self.energy <= 0:
             self.energy = 0
             self.life -= 5
             print(f"\n⚠️ {self.name} is exhausted!")
-            
+        
+        # If life drops to zero or below, pet dies, raise exception to end game
         if self.life <= 0:
             self.life = 0
             print(f"\n💀 {self.name} has passed away... Take better care next time.")
             raise Exception("Pet has died.")
-        
+    
+    # Method to update pet stats automatically based on real time elapsed  
     def update_stats_based_on_time(self):
         current_time = time.time()
         elapsed = current_time - self.last_update
-        intervals = int(elapsed // (5 * 60))  # number of 5-minute intervals
+        intervals = int(elapsed // (5 * 60))  # Calculate how many 5-minute intervals passed
 
         if intervals > 0:
             for _ in range(intervals):
+                # For each interval, increase hunger and decrease energy accordingly
                 self.hunger += 5
                 self.energy -= 5
 
-            # Age slower, e.g. add 0.1 per 5-minute interval
+            # Increase age slower over real time intervals
             self.age += 0.1 * intervals
             
             self.__clamp_stats()
             self.last_update += intervals * 5 * 60
-
+            
+            # Notifications similar to clock_tick
             if int(self.age) == 5:
                 print(f"\n✨ {self.name} is growing up!")
 
@@ -130,7 +139,8 @@ class DigiPet:
             print(f"\n😊 {self.name} is feeling {current_mood}!")
     
     
-    # Interactive methods:
+    # --- Interactive Methods ---
+    # Pet talks, randomly choosing a known word from vocab
     def talk(self):
         clear_screen()
         print(f"\n🗣️ I am {self.name}, a {self.animal_type}. I feel {self.mood()} right now.")
@@ -139,13 +149,13 @@ class DigiPet:
         self.mood_message()
         self.save()
 
-
+    # Feed the pet to reduce hunger
     def feed(self):
         clear_screen()
         if self.hunger == 0:
             print(f"\n{self.name} isn't hungry.")
         else:
-            amount = randrange(10, 30)
+            amount = randrange(10, 30)      # Random amount of hunger reduction
             self.hunger -= amount
             if self.hunger < 0:
                 self.hunger = 0
@@ -154,10 +164,10 @@ class DigiPet:
         self.mood_message()
         self.save()
 
-
+    # Let pet sleep to regain energy
     def sleep(self):
         clear_screen()
-        gain = randrange(20, 40)
+        gain = randrange(20, 40)        # Random energy gain
         self.energy += gain
         if self.energy > 100:
             self.energy = 100
@@ -167,21 +177,23 @@ class DigiPet:
         self.save()
 
 
+    # Play with the pet, which costs energy but increases hunger
     def play(self):
         clear_screen()
         if self.energy < 15:
             print(f"\n{self.name} is too tired to play!")
             return
         else:
-            fun = randrange(10, 30)
+            fun = randrange(10, 30)     # Energy cost of playing
             self.energy -= fun
-            self.hunger += 10
+            self.hunger += 10           # Playing makes pet hungry
             print(f"\n🎾 {self.name} had fun playing! Energy -{fun}, Hunger +10")
         self.__clock_tick()
         self.mood_message()
         self.save()
 
 
+    # Teach pet a new word (adds to vocab), costs some energy
     def teach(self, word):
         clear_screen()
         if word in self.vocab:
