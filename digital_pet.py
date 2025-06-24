@@ -78,8 +78,8 @@ class DigiPet:
         if self.energy < 20:
             return "tired"
         if self.energy > 50 and self.hunger < 50:
-            return "bored"
-        return "happy"
+            return "happy"
+        return "bored"
     
     
     # Method to print a message based on pet's mood
