@@ -32,7 +32,7 @@ class DigiPet:
         self.__clamp_stats()       # - Clamp stats within limits
         
         # - Check for life status (age limit, hunger, energy)
-        if self.age == 5:
+        if int(self.age) == 5:
             print(f"\n✨ {self.name} is growing up!")
         
         if self.age >= DigiPet.max_age:
@@ -54,31 +54,36 @@ class DigiPet:
             print(f"\n💀 {self.name} has passed away... Take better care next time.")
             raise Exception("Pet has died.")
         
-
     def update_stats_based_on_time(self):
         current_time = time.time()
         elapsed = current_time - self.last_update
         intervals = int(elapsed // (5 * 60))  # number of 5-minute intervals
 
         if intervals > 0:
-            # For each interval, increase hunger and reduce energy, maybe reduce life if starving
             for _ in range(intervals):
                 self.hunger += 5
                 self.energy -= 5
 
+            # Age slower, e.g. add 0.1 per 5-minute interval
+            self.age += 0.1 * intervals
+            
             self.__clamp_stats()
-            self.last_update += intervals * 5 * 60  # update the last_update timestamp
+            self.last_update += intervals * 5 * 60
 
-            # Optionally print messages if hungry or tired
+            if int(self.age) == 5:
+                print(f"\n✨ {self.name} is growing up!")
+
             if self.hunger >= 80:
                 print(f"\n⚠️ {self.name} is getting very hungry!")
             if self.energy <= 20:
                 print(f"\n😴 {self.name} is getting tired...")
 
-            # You can also check for death or other conditions here or call self.__clock_tick()
+            if self.age >= DigiPet.max_age:
+                print(f"\n💀 {self.name} has grown very old and passed away peacefully...")
+                self.life = 0
             if self.hunger >= 100 or self.energy <= 0:
-                # handle consequences, maybe call self.__clock_tick() or similar
                 pass
+            
         
     # Method to return pet life stage based on age
     def stage(self):
