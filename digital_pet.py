@@ -1,4 +1,5 @@
 # Step 1: Import necessary modules
+import time
 import json     # - json (to save/load pet state)
 from random import randrange    # - randrange (for random stat changes)
 import os       # - os (to check file existence)
@@ -10,7 +11,7 @@ class DigiPet:
     
     
     # Initialize pet with default or loaded values
-    def __init__(self, name, age=0, energy=100, hunger=0, life=100, vocab=None):
+    def __init__(self, name, age=0, energy=100, hunger=0, life=100, vocab=None, last_update=None):
         self.name = name
         self.animal_type = "Cat"
         self.age = age
@@ -18,6 +19,7 @@ class DigiPet:
         self.hunger = hunger
         self.life = life
         self.vocab = vocab if vocab is not None else ["Grrr...", "Meow", "Purr~"]
+        self.last_update = last_update or time.time()
         
         
     # Private method to simulate time passing
@@ -51,6 +53,31 @@ class DigiPet:
             print(f"\n💀 {self.name} has passed away... Take better care next time.")
             raise Exception("Pet has died.")
         
+
+    def update_stats_based_on_time(self):
+        current_time = time.time()
+        elapsed = current_time - self.last_update
+        intervals = int(elapsed // (5 * 60))  # number of 5-minute intervals
+
+        if intervals > 0:
+            # For each interval, increase hunger and reduce energy, maybe reduce life if starving
+            for _ in range(intervals):
+                self.hunger += 5
+                self.energy -= 5
+
+            self.__clamp_stats()
+            self.last_update += intervals * 5 * 60  # update the last_update timestamp
+
+            # Optionally print messages if hungry or tired
+            if self.hunger >= 80:
+                print(f"\n⚠️ {self.name} is getting very hungry!")
+            if self.energy <= 20:
+                print(f"\n😴 {self.name} is getting tired...")
+
+            # You can also check for death or other conditions here or call self.__clock_tick()
+            if self.hunger >= 100 or self.energy <= 0:
+                # handle consequences, maybe call self.__clock_tick() or similar
+                pass
         
     # Method to return pet life stage based on age
     def stage(self):
@@ -181,6 +208,7 @@ Mood: {self.mood()}
             "hunger": self.hunger,
             "life": self.life,
             "vocab": self.vocab,
+            "last_update": self.last_update
         }
         with open(DigiPet.save_file, "w") as file:
             json.dump(data, file)
@@ -201,4 +229,5 @@ Mood: {self.mood()}
             hunger=data.get("hunger", 0),
             life=data.get("life", 100),
             vocab=data.get("vocab", ["Grrr...", "Meow", "Purr~"]),
+            last_update=data.get("last_update", time.time())
         )

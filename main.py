@@ -17,6 +17,7 @@ def main():
     # Status and interaction menu
     try:
         while True:
+            pet.update_stats_based_on_time()
             clear_screen()
             pet.show_status()
             print("""
