@@ -23,7 +23,7 @@ def main():
         while True:
             
             clear_screen()
-            pet.show_status()
+            print(pet.show_status())
             print("""
 *** INTERACT WITH YOUR PET ***
 
