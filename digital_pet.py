@@ -151,8 +151,8 @@ class DigiPet:
         self.save()
 
 
-    # Feed the pet to reduce hunger
     def feed(self):
+        """Feed the pet to reduce hunger."""
         clear_screen()
         if self.hunger == 0:
             print(f"\n{self.name} isn't hungry.")
@@ -167,8 +167,8 @@ class DigiPet:
         self.save()
 
 
-    # Let pet sleep to regain energy
     def sleep(self):
+        """Let the pet sleep to regain energy."""
         clear_screen()
         gain = randrange(20, 40)        # Random energy gain
         self.energy += gain
@@ -180,8 +180,8 @@ class DigiPet:
         self.save()
 
 
-    # Play with the pet, which costs energy but increases hunger
     def play(self):
+        """Play with the pet, costing energy but increasing hunger."""
         clear_screen()
         if self.energy < 15:
             print(f"\n{self.name} is too tired to play!")
@@ -196,8 +196,8 @@ class DigiPet:
         self.save()
 
 
-    # Teach pet a new word (adds to vocab), costs some energy
     def teach(self, word):
+        """Teach the pet a new word, costing some energy."""
         clear_screen()
         if word in self.vocab:
             print(f"\n{self.name} already knows the word '{word}'!")
