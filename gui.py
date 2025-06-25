@@ -150,6 +150,13 @@ def get_pet_image():
     except Exception:
         return "images/normal_cat.jpg"
 
+# Pet image at the top
+pet_img = Image.open(get_pet_image())
+pet_img = pet_img.resize((120, 120))
+pet_photo = ImageTk.PhotoImage(pet_img)
+img_label = tk.Label(root, image=pet_photo)
+img_label.pack(pady=5)
+
 # 5. Add a frame to hold status and stat bars side by side
 status_frame = tk.Frame(root)
 status_frame.pack(pady=10)
@@ -171,6 +178,10 @@ hunger_bar.pack(pady=2)
 tk.Label(bars_frame, text="Life").pack(anchor="w")
 life_bar = ttk.Progressbar(bars_frame, length=120, maximum=DigiPet.max_life)
 life_bar.pack(pady=2)
+
+# Message label below status and bars
+message_label = tk.Label(root, text="", fg="blue", wraplength=350, justify="left")
+message_label.pack(pady=5)
 
 # 6. Add buttons for each action (Feed, Talk, Play, Sleep)
 button_frame = tk.Frame(root)
