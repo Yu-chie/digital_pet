@@ -15,5 +15,8 @@ Take care of your digital cat by feeding, playing, teaching new words, and monit
 
 ---
 
-Credits to:
-https://youtu.be/7m6O9zqZFZ8?si=Pp00lUY-B5q6Nbe7
+## Credits
+
+This project was inspired by the tutorial video:  
+[Virtual Pet Game Tutorial by Pippin Williamson](https://youtu.be/7m6O9zqZFZ8?si=Pp00lUY-B5q6Nbe7)
+Thank you for the helpful guide!
