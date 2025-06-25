@@ -115,19 +115,20 @@ class DigiPet:
         
     # Method to return current pet mood based on stats
     def mood(self):
+        """Return the pet's mood based on current stats."""
         if self.life <= 0:
             return "gone"
-        if self.hunger > 80:
+        if self.hunger > DigiPet.hunger_warning:
             return "hungry"
-        if self.energy < 20:
+        if self.energy < DigiPet.energy_warning:
             return "tired"
-        if self.energy > 50 and self.hunger < 50:
+        if self.energy > DigiPet.max_energy // 2 and self.hunger < DigiPet.max_hunger // 2:
             return "happy"
         return "bored"
-    
-    
+
     # Method to print a message based on pet's mood
     def mood_message(self):
+        """Print a message based on the pet's current mood."""
         current_mood = self.mood()
         if current_mood == "bored":
             print(f"\n😐 {self.name} looks bored. Maybe play with them?")
@@ -139,8 +140,7 @@ class DigiPet:
             print(f"\n💀 {self.name} is no longer with us...")
         else:
             print(f"\n😊 {self.name} is feeling {current_mood}!")
-    
-    
+
     # --- Interactive Methods ---
     # Pet talks, randomly choosing a known word from vocab
     def talk(self):
@@ -150,36 +150,32 @@ class DigiPet:
         self.__clock_tick()
         self.mood_message()
         self.save()
-
-
+        
+        
     def feed(self):
         """Feed the pet to reduce hunger."""
         clear_screen()
         if self.hunger == 0:
             print(f"\n{self.name} isn't hungry.")
         else:
-            amount = randrange(10, 30)      # Random amount of hunger reduction
+            amount = randrange(10, 30)
             self.hunger -= amount
-            if self.hunger < 0:
-                self.hunger = 0
             print(f"\n🍽️ {self.name} munches happily! Hunger -{amount}")
         self.__clock_tick()
+        self.__clamp_stats()
         self.mood_message()
         self.save()
-
 
     def sleep(self):
         """Let the pet sleep to regain energy."""
         clear_screen()
-        gain = randrange(20, 40)        # Random energy gain
+        gain = randrange(20, 40)
         self.energy += gain
-        if self.energy > 100:
-            self.energy = 100
         print(f"\n😴 {self.name} took a nap and feels better! Energy +{gain}")
         self.__clock_tick()
+        self.__clamp_stats()
         self.mood_message()
         self.save()
-
 
     def play(self):
         """Play with the pet, costing energy but increasing hunger."""
@@ -188,14 +184,14 @@ class DigiPet:
             print(f"\n{self.name} is too tired to play!")
             return
         else:
-            fun = randrange(10, 30)     # Energy cost of playing
+            fun = randrange(10, 30)
             self.energy -= fun
-            self.hunger += 10           # Playing makes pet hungry
+            self.hunger += 10
             print(f"\n🎾 {self.name} had fun playing! Energy -{fun}, Hunger +10")
         self.__clock_tick()
+        self.__clamp_stats()
         self.mood_message()
         self.save()
-
 
     def teach(self, word):
         """Teach the pet a new word, costing some energy."""
@@ -207,21 +203,21 @@ class DigiPet:
             self.energy -= 5
             print(f"\n🧠 You taught {self.name} to say '{word}'!")
             self.__clock_tick()
+            self.__clamp_stats()
             self.mood_message()
             self.save()
-    
-    
-    # Method to show all pet stats and mood
+
     def show_status(self):
+        """Display all pet stats and mood."""
         print(f"""
 📋 STATUS
 Name: {self.name}
 Stage: {self.stage()}
 Type: {self.animal_type}
 Age: {self.age}
-Energy: {self.energy}/100
-Hunger: {self.hunger}/100
-Life: {self.life}/100
+Energy: {self.energy}/{DigiPet.max_energy}
+Hunger: {self.hunger}/{DigiPet.max_hunger}
+Life: {self.life}/{DigiPet.max_life}
 Mood: {self.mood()}
 """)
         
