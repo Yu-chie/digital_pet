@@ -71,5 +71,13 @@ sleep_btn = tk.Button(button_frame, text="Sleep", width=12, command=do_sleep)
 sleep_btn.grid(row=0, column=3, padx=2)
 
 # 7. Add entry and button for teaching a new word
+teach_frame = tk.Frame(root)
+teach_frame.pack(pady=5)
+teach_entry = tk.Entry(teach_frame, width=20)
+teach_entry.pack(side=tk.LEFT)
+teach_btn = tk.Button(teach_frame, text="Teach Word", command=do_teach)
+teach_btn.pack(side=tk.LEFT, padx=5)
+
 # 8. Add a function to save the pet and close the window properly
+
 # 9. Start the Tkinter main loop
