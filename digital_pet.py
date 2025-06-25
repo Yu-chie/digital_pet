@@ -70,14 +70,7 @@ class DigiPet:
 
         if intervals > 0:
             for _ in range(intervals):
-                # For each interval, increase hunger and decrease energy accordingly
-                self.hunger += 5
-                self.energy -= 5
-
-            # Increase age slower over real time intervals
-            self.age += 0.1 * intervals
-            
-            self.__clamp_stats()
+                self.__clock_tick()
             self.last_update += intervals * 5 * 60
             
             # Notifications similar to clock_tick
