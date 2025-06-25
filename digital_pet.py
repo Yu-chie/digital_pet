@@ -1,11 +1,10 @@
-#DigiPet
+# DigiPet
 
 # Step 1: Import necessary modules
 import time
 import json     # - json (to save/load pet state)
 from random import randrange    # - randrange (for random stat changes)
 import os       # - os (to check file existence)
-from utils import loading_screen, clear_screen
 
 # Step 2: Define DigiPet class
 class DigiPet:
@@ -32,6 +31,8 @@ class DigiPet:
         
     # Private method to simulate time passing after each interaction
     def __clock_tick(self):
+        """Simulate time passing after each interaction."""
+        messages = []
         self.age += 0.1     # - Increase age
         self.energy -= 5    # - Decrease energy
         self.hunger += 5    # - Increase hunger
@@ -42,62 +43,63 @@ class DigiPet:
         
         # Notify when pet is growing up
         if int(self.age) == 5:
-            print(f"\n✨ {self.name} is growing up!")
+            messages.append(f"✨ {self.name} is growing up!")
         
         # Check if pet reached max age and should pass away peacefully
         if self.age >= DigiPet.max_age:
-            print(f"\n💀 {self.name} has grown very old and passed away peacefully...")
             self.life = 0
-        
+            messages.append(f"💀 {self.name} has grown very old and passed away peacefully...")
+
         # If hunger maxes out, decrease life and warn user
         if self.hunger >= 100:
             self.hunger = 100
             self.life -= 10
-            print(f"\n⚠️ {self.name} is starving!")
-        
+            messages.append(f"⚠️ {self.name} is starving!")
+
         # If energy depletes, decrease life and warn user
         if self.energy <= 0:
             self.energy = 0
             self.life -= 5
-            print(f"\n⚠️ {self.name} is exhausted!")
-        
+            messages.append(f"⚠️ {self.name} is exhausted!")
+
         # If life drops to zero or below, pet dies, raise exception to end game
         if self.life <= 0:
             self.life = 0
-            print(f"\n💀 {self.name} has passed away... Take better care next time.")
-            raise Exception("Pet has died.")
-    
+            messages.append(f"💀 {self.name} has passed away... Take better care next time.")
+            # For GUI, you can check if pet.life == 0 and handle accordingly
+        return "\n".join(messages)
+
     # Method to update pet stats automatically based on real time elapsed  
     def update_stats_based_on_time(self):
+        """Update pet stats based on real time elapsed."""
+        messages = []
         current_time = time.time()
         elapsed = current_time - self.last_update
         intervals = int(elapsed // (5 * 60))  # Calculate how many 5-minute intervals passed
 
         if intervals > 0:
             for _ in range(intervals):
-                self.__clock_tick()
+                msg = self.__clock_tick()
+                if msg:
+                    messages.append(msg)
             self.last_update += intervals * 5 * 60
             self.__clamp_stats()
             
             # Notifications similar to clock_tick
             if int(self.age) == 5:
-                print(f"\n✨ {self.name} is growing up!")
-
+                messages.append(f"✨ {self.name} is growing up!")
             if self.hunger >= DigiPet.hunger_warning:
-                print(f"\n⚠️ {self.name} is getting very hungry!")
-                
+                messages.append(f"⚠️ {self.name} is getting very hungry!")
             if self.energy <= DigiPet.energy_warning:
-                print(f"\n😴 {self.name} is getting tired...")
-
+                messages.append(f"😴 {self.name} is getting tired...")
             if self.age >= DigiPet.max_age:
-                print(f"\n💀 {self.name} has grown very old and passed away peacefully...")
                 self.life = 0
-            if self.hunger >= 100 or self.energy <= 0:
-                pass
-            
-        
+                messages.append(f"💀 {self.name} has grown very old and passed away peacefully...")
+        return "\n".join(messages)
+
     # Method to return pet life stage based on age
     def stage(self):
+        """Return pet life stage based on age."""
         if self.age < 3:
             return "Baby"
         elif self.age < 7:
@@ -129,104 +131,110 @@ class DigiPet:
 
     # Method to print a message based on pet's mood
     def mood_message(self):
-        """Print a message based on the pet's current mood."""
+        """Return a message based on the pet's current mood."""
         current_mood = self.mood()
         if current_mood == "bored":
-            print(f"\n😐 {self.name} looks bored. Maybe play with them?")
+            return f"😐 {self.name} looks bored. Maybe play with them?"
         elif current_mood == "tired":
-            print(f"\n😴 {self.name} looks very tired. Let them sleep!")
+            return f"😴 {self.name} looks very tired. Let them sleep!"
         elif current_mood == "hungry":
-            print(f"\n⚠️ {self.name} is very hungry!")
+            return f"⚠️ {self.name} is very hungry!"
         elif current_mood == "gone":
-            print(f"\n💀 {self.name} is no longer with us...")
+            return f"💀 {self.name} is no longer with us..."
         else:
-            print(f"\n😊 {self.name} is feeling {current_mood}!")
+            return f"😊 {self.name} is feeling {current_mood}!"
 
     # --- Interactive Methods ---
     # Pet talks, randomly choosing a known word from vocab
     def talk(self):
-        clear_screen()
-        print(f"\n🗣️ I am {self.name}, a {self.animal_type}. I feel {self.mood()} right now.")
-        print(f"{self.name} says: {self.vocab[randrange(len(self.vocab))]}")
-        self.__clock_tick()
-        self.mood_message()
+        """Pet talks, randomly choosing a known word from vocab."""
+        if self.life <= 0:
+            return self.mood_message()
+        msg = f"🗣️ I am {self.name}, a {self.animal_type}. I feel {self.mood()} right now.\n"
+        msg += f"{self.name} says: {self.vocab[randrange(len(self.vocab))]}"
+        tick_msg = self.__clock_tick()
+        mood_msg = self.mood_message()
         self.save()
-        
-        
+        return "\n".join([msg, tick_msg, mood_msg]).strip()
+
     def feed(self):
         """Feed the pet to reduce hunger."""
-        clear_screen()
+        if self.life <= 0:
+            return self.mood_message()
         if self.hunger == 0:
-            print(f"\n{self.name} isn't hungry.")
+            msg = f"{self.name} isn't hungry."
         else:
             amount = randrange(10, 30)
             self.hunger -= amount
-            print(f"\n🍽️ {self.name} munches happily! Hunger -{amount}")
-        self.__clock_tick()
+            msg = f"🍽️ {self.name} munches happily! Hunger -{amount}"
+        tick_msg = self.__clock_tick()
         self.__clamp_stats()
-        self.mood_message()
+        mood_msg = self.mood_message()
         self.save()
+        return "\n".join([msg, tick_msg, mood_msg]).strip()
 
     def sleep(self):
         """Let the pet sleep to regain energy."""
-        clear_screen()
+        if self.life <= 0:
+            return self.mood_message()
         gain = randrange(20, 40)
         self.energy += gain
-        print(f"\n😴 {self.name} took a nap and feels better! Energy +{gain}")
-        self.__clock_tick()
+        msg = f"😴 {self.name} took a nap and feels better! Energy +{gain}"
+        tick_msg = self.__clock_tick()
         self.__clamp_stats()
-        self.mood_message()
+        mood_msg = self.mood_message()
         self.save()
+        return "\n".join([msg, tick_msg, mood_msg]).strip()
 
     def play(self):
         """Play with the pet, costing energy but increasing hunger."""
-        clear_screen()
+        if self.life <= 0:
+            return self.mood_message()
         if self.energy < 15:
-            print(f"\n{self.name} is too tired to play!")
-            return
-        else:
-            fun = randrange(10, 30)
-            self.energy -= fun
-            self.hunger += 10
-            print(f"\n🎾 {self.name} had fun playing! Energy -{fun}, Hunger +10")
-        self.__clock_tick()
+            return f"{self.name} is too tired to play!"
+        fun = randrange(10, 30)
+        self.energy -= fun
+        self.hunger += 10
+        msg = f"🎾 {self.name} had fun playing! Energy -{fun}, Hunger +10"
+        tick_msg = self.__clock_tick()
         self.__clamp_stats()
-        self.mood_message()
+        mood_msg = self.mood_message()
         self.save()
+        return "\n".join([msg, tick_msg, mood_msg]).strip()
 
     def teach(self, word):
         """Teach the pet a new word, costing some energy."""
-        clear_screen()
+        if self.life <= 0:
+            return self.mood_message()
         if word in self.vocab:
-            print(f"\n{self.name} already knows the word '{word}'!")
+            return f"{self.name} already knows the word '{word}'!"
         elif self.energy < 5:
-            print(f"\n{self.name} is too tired to learn a new word!")
-        else:
-            self.vocab.append(word)
-            self.energy -= 5
-            print(f"\n🧠 You taught {self.name} to say '{word}'!")
-            self.__clock_tick()
-            self.__clamp_stats()
-            self.mood_message()
-            self.save()
+            return f"{self.name} is too tired to learn a new word!"
+        self.vocab.append(word)
+        self.energy -= 5
+        msg = f"🧠 You taught {self.name} to say '{word}'!"
+        tick_msg = self.__clock_tick()
+        self.__clamp_stats()
+        mood_msg = self.mood_message()
+        self.save()
+        return "\n".join([msg, tick_msg, mood_msg]).strip()
 
     def show_status(self):
-        """Display all pet stats and mood."""
-        print(f"""
+        """Return all pet stats and mood as a string."""
+        return f"""
 📋 STATUS
 Name: {self.name}
 Stage: {self.stage()}
 Type: {self.animal_type}
-Age: {self.age}
+Age: {self.age:.1f}
 Energy: {self.energy}/{DigiPet.max_energy}
 Hunger: {self.hunger}/{DigiPet.max_hunger}
 Life: {self.life}/{DigiPet.max_life}
 Mood: {self.mood()}
-""")
-        
-        
-    # Method to save/write pet data to JSON file
+"""
+
     def save(self):
+        """Save pet data to JSON file."""
         self.last_update = time.time()  # Update last interaction time
         data = {
             "name": self.name,
@@ -240,14 +248,14 @@ Mood: {self.mood()}
         try:
             with open(DigiPet.save_file, "w") as file:
                 json.dump(data, file)
-            print("\n💾 Game saved!")
         except Exception as e:
-            print(f"\n❌ Error saving game: {e}")  
-
+            # For GUI, you might want to log this error
+            pass
 
     # Class method to load pet data from JSON file or return None
     @classmethod
     def load(cls):
+        """Load pet data from JSON file or return None."""
         if not os.path.exists(cls.save_file):
             return None
         try:
@@ -263,5 +271,5 @@ Mood: {self.mood()}
                 last_update=data.get("last_update", time.time())
             )
         except Exception as e:
-            print(f"\n❌ Error loading game: {e}")
+            # For GUI, you might want to log this error
             return None
