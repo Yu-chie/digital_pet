@@ -55,6 +55,21 @@ message_label = tk.Label(root, text="", fg="blue", wraplength=350, justify="left
 message_label.pack(pady=5)
 
 # 6. Add buttons for each action (Feed, Talk, Play, Sleep)
+button_frame = tk.Frame(root)
+button_frame.pack(pady=5)
+
+feed_btn = tk.Button(button_frame, text="Feed", width=12, command=do_feed)
+feed_btn.grid(row=0, column=0, padx=2)
+
+talk_btn = tk.Button(button_frame, text="Talk", width=12, command=do_talk)
+talk_btn.grid(row=0, column=1, padx=2)
+
+play_btn = tk.Button(button_frame, text="Play", width=12, command=do_play)
+play_btn.grid(row=0, column=2, padx=2)
+
+sleep_btn = tk.Button(button_frame, text="Sleep", width=12, command=do_sleep)
+sleep_btn.grid(row=0, column=3, padx=2)
+
 # 7. Add entry and button for teaching a new word
 # 8. Add a function to save the pet and close the window properly
 # 9. Start the Tkinter main loop
