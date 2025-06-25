@@ -79,5 +79,9 @@ teach_btn = tk.Button(teach_frame, text="Teach Word", command=do_teach)
 teach_btn.pack(side=tk.LEFT, padx=5)
 
 # 8. Add a function to save the pet and close the window properly
-
+def on_close():
+    pet.save()
+    root.destroy()
+    
 # 9. Start the Tkinter main loop
+root.mainloop()
