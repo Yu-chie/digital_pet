@@ -15,10 +15,23 @@ def show_loading_screen():
     loading.after(2000, loading.destroy)  # Show for 2 seconds
     loading.mainloop()
 
+def show_splash_screen():
+    splash = tk.Tk()
+    splash.title("Welcome to DigiPet!")
+    img = Image.open("images/opening.jpg")
+    img = img.resize((350, 250))
+    photo = ImageTk.PhotoImage(img)
+    label = tk.Label(splash, image=photo)
+    label.image = photo  # Keep a reference!
+    label.pack()
+    splash.after(2000, splash.destroy)  # Show for 2 seconds
+    splash.mainloop()
+
 # 2. Load or create a DigiPet instance
 pet = DigiPet.load()
 if not pet:
-    show_loading_screen()
+    show_splash_screen()      # <-- Show opening.jpg splash first
+    show_loading_screen()     # Then show loading screen
     # Ask for pet name using a simple dialog
     name_prompt = tk.Tk()
     name_prompt.title("Name Your Pet")
