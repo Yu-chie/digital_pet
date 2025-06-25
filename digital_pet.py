@@ -198,6 +198,8 @@ class DigiPet:
         clear_screen()
         if word in self.vocab:
             print(f"\n{self.name} already knows the word '{word}'!")
+        elif self.energy < 5:
+            print(f"\n{self.name} is too tired to learn a new word!")
         else:
             self.vocab.append(word)
             self.energy -= 5
