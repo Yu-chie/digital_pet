@@ -14,6 +14,8 @@ def main():
         pet_name = input("What do you want to name your pet?: ")
         pet = DigiPet(pet_name)
 
+    pet.update_stats_based_on_time()  # <-- Add this line
+
     input(f"\nHello! I am {pet.name} the {pet.animal_type}, and I am new here!\nPress Enter to start!")
 
     # Status and interaction menu
