@@ -11,12 +11,38 @@ if not pet:
     pet = DigiPet(pet_name)
     
 # 3. Define functions for each button/action:
-#    - update_status: update the status label with pet stats
-#    - do_feed: feed the pet and show result
-#    - do_talk: make the pet talk and show result
-#    - do_play: play with the pet and show result
-#    - do_sleep: let the pet sleep and show result
-#    - do_teach: teach the pet a new word from entry box and show result
+def update_status():
+    """Update the status label with pet's current stats."""
+    status_label.config(text=pet.show_status())
+
+def do_feed():
+    result = pet.feed()
+    message_label.config(text=result)
+    update_status()
+
+def do_talk():
+    result = pet.talk()
+    message_label.config(text=result)
+    update_status()
+
+def do_play():
+    result = pet.play()
+    message_label.config(text=result)
+    update_status()
+
+def do_sleep():
+    result = pet.sleep()
+    message_label.config(text=result)
+    update_status()
+
+def do_teach():
+    word = teach_entry.get()
+    if word:
+        result = pet.teach(word)
+        message_label.config(text=result)
+        teach_entry.delete(0, tk.END)
+        update_status()
+
 # 4. Set up the main Tkinter window
 # 5. Add labels for status and messages
 # 6. Add buttons for each action (Feed, Talk, Play, Sleep)
