@@ -4,11 +4,35 @@
 import tkinter as tk
 from digital_pet import DigiPet
 from PIL import Image, ImageTk
+import time
+
+# --- Loading screen function ---
+def show_loading_screen():
+    loading = tk.Tk()
+    loading.title("Loading...")
+    tk.Label(loading, text="👶 A new baby pet is being born...", font=("Arial", 14)).pack(padx=30, pady=20)
+    loading.update()
+    loading.after(2000, loading.destroy)  # Show for 2 seconds
+    loading.mainloop()
 
 # 2. Load or create a DigiPet instance
 pet = DigiPet.load()
 if not pet:
-    pet_name = input("What do you want to name your pet?: ")
+    show_loading_screen()
+    # Ask for pet name using a simple dialog
+    name_prompt = tk.Tk()
+    name_prompt.title("Name Your Pet")
+    tk.Label(name_prompt, text="What do you want to name your pet?").pack(padx=10, pady=10)
+    name_var = tk.StringVar()
+    entry = tk.Entry(name_prompt, textvariable=name_var)
+    entry.pack(padx=10, pady=5)
+    entry.focus_set()
+    def set_name_and_close():
+        name_prompt.destroy()
+    tk.Button(name_prompt, text="OK", command=set_name_and_close).pack(pady=10)
+    name_prompt.bind('<Return>', lambda event: set_name_and_close())
+    name_prompt.mainloop()
+    pet_name = name_var.get() if name_var.get() else "Fluffy"
     pet = DigiPet(pet_name)
     
 # 3. Define functions for each button/action:
