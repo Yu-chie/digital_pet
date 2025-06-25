@@ -2,7 +2,6 @@
 
 # 1. Import necessary libraries (tkinter, DigiPet class)
 import tkinter as tk
-import tkinter.ttk as ttk
 from digital_pet import DigiPet
 
 # 2. Load or create a DigiPet instance
@@ -13,11 +12,8 @@ if not pet:
     
 # 3. Define functions for each button/action:
 def update_status():
-    """Update the status label and stat bars with pet's current stats."""
+    """Update the status label with pet's current stats."""
     status_label.config(text=pet.show_status())
-    energy_bar['value'] = pet.energy
-    hunger_bar['value'] = pet.hunger
-    life_bar['value'] = pet.life
 
 def do_feed():
     result = pet.feed()
@@ -81,17 +77,6 @@ teach_entry = tk.Entry(teach_frame, width=20)
 teach_entry.pack(side=tk.LEFT)
 teach_btn = tk.Button(teach_frame, text="Teach Word", command=do_teach)
 teach_btn.pack(side=tk.LEFT, padx=5)
-
-# Add labels and stat bars for Energy, Hunger, and Life
-tk.Label(root, text="Energy").pack()
-energy_bar = ttk.Progressbar(root, length=200, maximum=DigiPet.max_energy)
-energy_bar.pack(pady=2)
-tk.Label(root, text="Hunger").pack()
-hunger_bar = ttk.Progressbar(root, length=200, maximum=DigiPet.max_hunger)
-hunger_bar.pack(pady=2)
-tk.Label(root, text="Life").pack()
-life_bar = ttk.Progressbar(root, length=200, maximum=DigiPet.max_life)
-life_bar.pack(pady=2)
 
 # 8. Add a function to save the pet and close the window properly
 def on_close():
