@@ -74,18 +74,29 @@ def update_status():
     energy_bar['value'] = pet.energy
     hunger_bar['value'] = pet.hunger
     life_bar['value'] = pet.life
+    if pet.life <= 0:
+        set_buttons_state("disabled")
+        message_label.config(text="💀 Your pet has passed away. Restart the game to try again.")
+
+def set_buttons_state(state):
+    feed_btn.config(state=state)
+    talk_btn.config(state=state)
+    play_btn.config(state=state)
+    sleep_btn.config(state=state)
+    teach_btn.config(state=state)
 
 def show_action_image(image_path, delay=800):
-    """Show an action image for a short time, then revert to mood image."""
+    set_buttons_state("disabled")
     try:
         action_img = Image.open(image_path)
         action_img = action_img.resize((120, 120))
         action_photo = ImageTk.PhotoImage(action_img)
         img_label.config(image=action_photo)
         img_label.image = action_photo
-        root.after(delay, update_status)  # revert to mood image after delay (ms)
+        root.after(delay, lambda: [update_status(), set_buttons_state("normal")])
     except Exception:
         update_status()
+        set_buttons_state("normal")
 
 def do_feed():
     result = pet.feed()
