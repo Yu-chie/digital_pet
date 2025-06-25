@@ -150,30 +150,27 @@ def get_pet_image():
     except Exception:
         return "images/normal_cat.jpg"
 
-# 5. Add labels for status and messages
-status_label = tk.Label(root, text=pet.show_status(), font=("Consolas", 10), justify="left")
-status_label.pack(pady=10)
+# 5. Add a frame to hold status and stat bars side by side
+status_frame = tk.Frame(root)
+status_frame.pack(pady=10)
 
-message_label = tk.Label(root, text="", fg="blue", wraplength=350, justify="left")
-message_label.pack(pady=5)
+# Status label on the left
+status_label = tk.Label(status_frame, text=pet.show_status(), font=("Consolas", 10), justify="left")
+status_label.pack(side=tk.LEFT, padx=10)
 
-# Pet image at the top
-pet_img = Image.open(get_pet_image())
-pet_img = pet_img.resize((120, 120))
-pet_photo = ImageTk.PhotoImage(pet_img)
-img_label = tk.Label(root, image=pet_photo)
-img_label.pack(pady=5)
+# Stat bars on the right, stacked vertically
+bars_frame = tk.Frame(status_frame)
+bars_frame.pack(side=tk.LEFT, padx=10)
 
-# Stat bars
-tk.Label(root, text="Energy").pack()
-energy_bar = ttk.Progressbar(root, length=200, maximum=DigiPet.max_energy)
-energy_bar.pack()
-tk.Label(root, text="Hunger").pack()
-hunger_bar = ttk.Progressbar(root, length=200, maximum=DigiPet.max_hunger)
-hunger_bar.pack()
-tk.Label(root, text="Life").pack()
-life_bar = ttk.Progressbar(root, length=200, maximum=DigiPet.max_life)
-life_bar.pack()
+tk.Label(bars_frame, text="Energy").pack(anchor="w")
+energy_bar = ttk.Progressbar(bars_frame, length=120, maximum=DigiPet.max_energy)
+energy_bar.pack(pady=2)
+tk.Label(bars_frame, text="Hunger").pack(anchor="w")
+hunger_bar = ttk.Progressbar(bars_frame, length=120, maximum=DigiPet.max_hunger)
+hunger_bar.pack(pady=2)
+tk.Label(bars_frame, text="Life").pack(anchor="w")
+life_bar = ttk.Progressbar(bars_frame, length=120, maximum=DigiPet.max_life)
+life_bar.pack(pady=2)
 
 # 6. Add buttons for each action (Feed, Talk, Play, Sleep)
 button_frame = tk.Frame(root)
