@@ -60,24 +60,28 @@ def update_status():
     img_label.image = pet_photo
 
 def do_feed():
+    show_action_image("images/eating_cat.jpg")
     result = pet.feed()
     message_label.config(text=result)
-    update_status()
+    # update_status() will be called by show_action_image after delay
 
 def do_talk():
     result = pet.talk()
     message_label.config(text=result)
     update_status()
+    show_action_image("images/talking_cat.jpg")  # Show talking image
 
 def do_play():
     result = pet.play()
     message_label.config(text=result)
     update_status()
+    show_action_image("images/playing_cat.jpg")  # Show playing image
 
 def do_sleep():
     result = pet.sleep()
     message_label.config(text=result)
     update_status()
+    show_action_image("images/sleep_cat.jpg")  # Show sleeping image
 
 def do_teach():
     word = teach_entry.get()
@@ -101,6 +105,15 @@ def get_pet_image():
         return "images/sad_cat.jpg"
     else:
         return "images/normal_cat.jpg"
+
+def show_action_image(image_path, delay=800):
+    """Show an action image for a short time, then revert to mood image."""
+    action_img = Image.open(image_path)
+    action_img = action_img.resize((120, 120))
+    action_photo = ImageTk.PhotoImage(action_img)
+    img_label.config(image=action_photo)
+    img_label.image = action_photo
+    root.after(delay, update_status)  # revert to mood image after delay (ms)
 
 # 4. Set up the main Tkinter window
 root = tk.Tk()
