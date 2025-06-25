@@ -53,17 +53,17 @@ def do_teach():
 def get_pet_image():
     mood = pet.mood()
     if mood == "happy":
-        return "happy_cat.jpg"
+        return "images/happy_cat.jpg"
     elif mood == "hungry":
-        return "eating_cat.jpg"
+        return "images/eating_cat.jpg"
     elif mood == "tired":
-        return "sleep_cat.jpg"
+        return "images/sleep_cat.jpg"
     elif mood == "bored":
-        return "standby_cat.jpg"
+        return "images/standby_cat.jpg"
     elif mood == "gone":
-        return "sad_cat.jpg"
+        return "images/sad_cat.jpg"
     else:
-        return "normal_cat.jpg"
+        return "images/normal_cat.jpg"
 
 # 4. Set up the main Tkinter window
 root = tk.Tk()
