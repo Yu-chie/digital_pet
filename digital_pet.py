@@ -107,6 +107,7 @@ class DigiPet:
         
     # Private method to keep stats in valid range
     def __clamp_stats(self):
+        """Clamp energy, hunger, and life stats within valid ranges."""
         self.energy = max(0, min(self.energy, DigiPet.max_energy))
         self.hunger = max(0, min(self.hunger, DigiPet.max_hunger))
         self.life = max(0, min(self.life, DigiPet.max_life))
