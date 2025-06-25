@@ -1,21 +1,20 @@
-# DigiPet
+# DigiPet - Virtual Pet Simulation
 
-# Step 1: Import necessary modules
+# Import necessary modules
 import time
-import json     # - json (to save/load pet state)
-from random import randrange    # - randrange (for random stat changes)
-import os       # - os (to check file existence)
+import json     # For saving/loading pet state
+from random import randrange    # For random stat changes
+import os       # For checking file existence
 
-# Step 2: Define DigiPet class
+# Define DigiPet class
 class DigiPet:
-    max_age = 10                # Maximum age before pet passes away
+    max_age = 10            # Maximum age before pet passes away
     save_file = "save.json"     # Filename for saving/loading pet data
-    max_energy = 100
-    max_hunger = 100
-    max_life = 100
-    hunger_warning = 80
-    energy_warning = 20
-    
+    max_energy = 100        # Maximum energy value
+    max_hunger = 100        # Maximum hunger value
+    max_life = 100          # Maximum life value
+    hunger_warning = 80     # Hunger level to trigger warning
+    energy_warning = 20     # Energy level to trigger warning
     
     # Initialize pet with default or loaded values
     def __init__(self, name, age=0, energy=100, hunger=0, life=100, vocab=None, last_update=None):
@@ -28,7 +27,6 @@ class DigiPet:
         self.vocab = vocab if vocab is not None else ["Grrr...", "Meow", "Purr~"]
         self.last_update = last_update or time.time()
         
-        
     # Private method to simulate time passing after each interaction
     def __clock_tick(self):
         """Simulate time passing after each interaction."""
@@ -37,10 +35,9 @@ class DigiPet:
         self.energy -= 5    # - Decrease energy
         self.hunger += 5    # - Increase hunger
         
-        self.__clamp_stats()       # - Clamp stats within limits
+        self.__clamp_stats()       # Clamp stats within limits
         
         # - Check for life status (age limit, hunger, energy)
-        
         # Notify when pet is growing up
         if int(self.age) == 5:
             messages.append(f"✨ {self.name} is growing up!")
@@ -107,14 +104,12 @@ class DigiPet:
         else:
             return "Adult"
         
-        
     # Private method to keep stats in valid range
     def __clamp_stats(self):
         """Clamp energy, hunger, and life stats within valid ranges."""
         self.energy = max(0, min(self.energy, DigiPet.max_energy))
         self.hunger = max(0, min(self.hunger, DigiPet.max_hunger))
         self.life = max(0, min(self.life, DigiPet.max_life))
-        
         
     # Method to return current pet mood based on stats
     def mood(self):
