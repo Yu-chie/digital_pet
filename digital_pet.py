@@ -77,6 +77,7 @@ class DigiPet:
             for _ in range(intervals):
                 self.__clock_tick()
             self.last_update += intervals * 5 * 60
+            self.__clamp_stats()
             
             # Notifications similar to clock_tick
             if int(self.age) == 5:
