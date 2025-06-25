@@ -44,6 +44,9 @@ def do_teach():
         update_status()
 
 # 4. Set up the main Tkinter window
+root = tk.Tk()
+root.title("DigiPet GUI")
+
 # 5. Add labels for status and messages
 # 6. Add buttons for each action (Feed, Talk, Play, Sleep)
 # 7. Add entry and button for teaching a new word
