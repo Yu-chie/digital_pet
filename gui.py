@@ -48,6 +48,12 @@ root = tk.Tk()
 root.title("DigiPet GUI")
 
 # 5. Add labels for status and messages
+status_label = tk.Label(root, text=pet.show_status(), font=("Consolas", 10), justify="left")
+status_label.pack(pady=10)
+
+message_label = tk.Label(root, text="", fg="blue", wraplength=350, justify="left")
+message_label.pack(pady=5)
+
 # 6. Add buttons for each action (Feed, Talk, Play, Sleep)
 # 7. Add entry and button for teaching a new word
 # 8. Add a function to save the pet and close the window properly
