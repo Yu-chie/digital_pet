@@ -107,9 +107,9 @@ class DigiPet:
         
     # Private method to keep stats in valid range
     def __clamp_stats(self):
-        self.energy = max(0, min(self.energy, 100))
-        self.hunger = max(0, min(self.hunger, 100))
-        self.life = max(0, min(self.life, 100))
+        self.energy = max(0, min(self.energy, DigiPet.max_energy))
+        self.hunger = max(0, min(self.hunger, DigiPet.max_hunger))
+        self.life = max(0, min(self.life, DigiPet.max_life))
         
         
     # Method to return current pet mood based on stats
