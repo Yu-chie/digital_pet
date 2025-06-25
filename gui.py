@@ -5,6 +5,11 @@ import tkinter as tk
 from digital_pet import DigiPet
 
 # 2. Load or create a DigiPet instance
+pet = DigiPet.load()
+if not pet:
+    pet_name = input("What do you want to name your pet?: ")
+    pet = DigiPet(pet_name)
+    
 # 3. Define functions for each button/action:
 #    - update_status: update the status label with pet stats
 #    - do_feed: feed the pet and show result
