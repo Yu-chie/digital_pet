@@ -151,6 +151,7 @@ class DigiPet:
         self.mood_message()
         self.save()
 
+
     # Feed the pet to reduce hunger
     def feed(self):
         clear_screen()
@@ -165,6 +166,7 @@ class DigiPet:
         self.__clock_tick()
         self.mood_message()
         self.save()
+
 
     # Let pet sleep to regain energy
     def sleep(self):
@@ -226,6 +228,7 @@ Mood: {self.mood()}
         
     # Method to save/write pet data to JSON file
     def save(self):
+        self.last_update = time.time()  # Update last interaction time
         data = {
             "name": self.name,
             "age": self.age,
@@ -235,9 +238,12 @@ Mood: {self.mood()}
             "vocab": self.vocab,
             "last_update": self.last_update
         }
-        with open(DigiPet.save_file, "w") as file:
-            json.dump(data, file)
-        print("\n💾 Game saved!")
+        try:
+            with open(DigiPet.save_file, "w") as file:
+                json.dump(data, file)
+            print("\n💾 Game saved!")
+        except Exception as e:
+            print(f"\n❌ Error saving game: {e}")  
 
 
     # Class method to load pet data from JSON file or return None
@@ -245,14 +251,18 @@ Mood: {self.mood()}
     def load(cls):
         if not os.path.exists(cls.save_file):
             return None
-        with open(cls.save_file, "r") as file:
-            data = json.load(file)
-        return cls(
-            name=data.get("name", "NoName"),
-            age=data.get("age", 0),
-            energy=data.get("energy", 100),
-            hunger=data.get("hunger", 0),
-            life=data.get("life", 100),
-            vocab=data.get("vocab", ["Grrr...", "Meow", "Purr~"]),
-            last_update=data.get("last_update", time.time())
-        )
+        try:
+            with open(cls.save_file, "r") as file:
+                data = json.load(file)
+            return cls(
+                name=data.get("name", "NoName"),
+                age=data.get("age", 0),
+                energy=data.get("energy", 100),
+                hunger=data.get("hunger", 0),
+                life=data.get("life", 100),
+                vocab=data.get("vocab", ["Grrr...", "Meow", "Purr~"]),
+                last_update=data.get("last_update", time.time())
+            )
+        except Exception as e:
+            print(f"\n❌ Error loading game: {e}")
+            return None
