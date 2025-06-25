@@ -82,9 +82,10 @@ class DigiPet:
             if int(self.age) == 5:
                 print(f"\n✨ {self.name} is growing up!")
 
-            if self.hunger >= 80:
+            if self.hunger >= DigiPet.hunger_warning:
                 print(f"\n⚠️ {self.name} is getting very hungry!")
-            if self.energy <= 20:
+                
+            if self.energy <= DigiPet.energy_warning:
                 print(f"\n😴 {self.name} is getting tired...")
 
             if self.age >= DigiPet.max_age:
