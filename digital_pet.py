@@ -11,6 +11,11 @@ from utils import loading_screen, clear_screen
 class DigiPet:
     max_age = 10                # Maximum age before pet passes away
     save_file = "save.json"     # Filename for saving/loading pet data
+    max_energy = 100
+    max_hunger = 100
+    max_life = 100
+    hunger_warning = 80
+    energy_warning = 20
     
     
     # Initialize pet with default or loaded values
