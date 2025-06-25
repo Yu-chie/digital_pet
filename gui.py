@@ -3,6 +3,7 @@
 # 1. Import necessary libraries (tkinter, DigiPet class)
 import tkinter as tk
 from digital_pet import DigiPet
+from PIL import Image, ImageTk
 
 # 2. Load or create a DigiPet instance
 pet = DigiPet.load()
@@ -14,6 +15,12 @@ if not pet:
 def update_status():
     """Update the status label with pet's current stats."""
     status_label.config(text=pet.show_status())
+    # Update image
+    pet_img = Image.open(get_pet_image())
+    pet_img = pet_img.resize((120, 120))
+    pet_photo = ImageTk.PhotoImage(pet_img)
+    img_label.config(image=pet_photo)
+    img_label.image = pet_photo
 
 def do_feed():
     result = pet.feed()
@@ -42,6 +49,21 @@ def do_teach():
         message_label.config(text=result)
         teach_entry.delete(0, tk.END)
         update_status()
+
+def get_pet_image():
+    mood = pet.mood()
+    if mood == "happy":
+        return "happy_cat.jpg"
+    elif mood == "hungry":
+        return "eating_cat.jpg"
+    elif mood == "tired":
+        return "sleep_cat.jpg"
+    elif mood == "bored":
+        return "standby_cat.jpg"
+    elif mood == "gone":
+        return "sad_cat.jpg"
+    else:
+        return "normal_cat.jpg"
 
 # 4. Set up the main Tkinter window
 root = tk.Tk()
@@ -77,6 +99,12 @@ teach_entry = tk.Entry(teach_frame, width=20)
 teach_entry.pack(side=tk.LEFT)
 teach_btn = tk.Button(teach_frame, text="Teach Word", command=do_teach)
 teach_btn.pack(side=tk.LEFT, padx=5)
+
+pet_img = Image.open(get_pet_image())
+pet_img = pet_img.resize((120, 120))
+pet_photo = ImageTk.PhotoImage(pet_img)
+img_label = tk.Label(root, image=pet_photo)
+img_label.pack(pady=5)
 
 # 8. Add a function to save the pet and close the window properly
 def on_close():
